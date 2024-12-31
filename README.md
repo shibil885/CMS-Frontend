@@ -1,27 +1,170 @@
-# CMSFrontEnd
+# Content Management System (CMS) - MEAN Stack
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+## Overview
+This project is a simple Content Management System (CMS) built using the MEAN stack (MongoDB, Express.js, Angular, Nest.js). The CMS allows users to register, log in, and manage articles (create, read, update, delete).
 
-## Development server
+## Features
+- User Registration and Login
+- JWT-based Authentication and Authorization
+- Responsive Dashboard
+- CRUD Operations for Articles
+- RESTful APIs
+- MongoDB Integration
+- Clean and Intuitive User Interface
+- Deployed to a cloud platform
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+## Technologies Used
+- **Frontend**: Angular
+- **Backend**: Nest.js (with Express.js)
+- **Database**: MongoDB
+- **Authentication**: JSON Web Tokens (JWT)
+- **Styling**: Tailwind CSS
+- **Deployment**: [Cloud Platform - e.g., Heroku, AWS, or Render]
 
-## Code scaffolding
+---
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+## Installation and Setup
 
-## Build
+### Prerequisites
+1. Node.js (v16 or later)
+2. MongoDB (local or cloud-based)
+3. Git
+4. Angular CLI
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+### Backend Setup
+1. Clone the repository:
+   ```bash
+   git clone <repository-url>
+   cd cms-backend
+   ```
 
-## Running unit tests
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+3. Configure environment variables:
+   Create a `.env` file in the root directory with the following:
+   ```env
+   PORT=3000
+   MONGODB_URI=<your-mongodb-connection-string>
+   JWT_SECRET=<your-jwt-secret>
+   ```
 
-## Running end-to-end tests
+4. Start the backend server:
+   ```bash
+   npm run start:dev
+   ```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### Frontend Setup
+1. Navigate to the frontend folder:
+   ```bash
+   cd cms-frontend
+   ```
 
-## Further help
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+3. Start the frontend development server:
+   ```bash
+   ng serve
+   ```
+
+4. Open your browser and navigate to:
+   ```
+   http://localhost:4200
+   ```
+
+---
+
+## Folder Structure
+
+### Backend (Nest.js)
+```
+- src/
+  - auth/
+  - articles/
+  - users/
+  - app.module.ts
+  - main.ts
+```
+
+### Frontend (Angular)
+```
+- src/
+  - app/
+    - components/
+      - dashboard/
+      - article-form/
+      - article-details/
+    - services/
+      - auth.service.ts
+      - article.service.ts
+```
+
+---
+
+## API Endpoints
+
+### Authentication
+- `POST /auth/register`: User registration
+- `POST /auth/login`: User login
+
+### Articles
+- `GET /articles`: Fetch all articles
+- `POST /articles`: Create a new article
+- `GET /articles/:id`: Fetch article by ID
+- `PUT /articles/:id`: Update an article
+- `DELETE /articles/:id`: Delete an article
+
+---
+
+## Deployment
+
+The application is deployed at:
+[**Deployed App Link**](<deployed-app-url>)
+
+### Deployment Steps
+1. Build the Angular application:
+   ```bash
+   ng build --prod
+   ```
+
+2. Deploy the Angular build and Nest.js server to a cloud platform such as Heroku, AWS, or Render.
+
+---
+
+## Usage
+1. Register a new account.
+2. Log in with your credentials.
+3. Access the dashboard to manage articles.
+4. Create, edit, view, or delete articles as needed.
+
+---
+
+## Additional Libraries
+- **bcrypt**: For password hashing
+- **@nestjs/jwt**: JWT management
+- **mongoose**: MongoDB ORM
+
+---
+
+## Contribution
+Feel free to submit issues or pull requests to enhance the project.
+
+---
+
+## Author
+[Your Name](mailto:your-email@example.com)
+
+---
+
+## License
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## Contact
+For any questions or support, please contact [your-email@example.com].
