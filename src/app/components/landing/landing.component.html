@@ -1,0 +1,91 @@
+<div class="min-h-screen bg-white">
+    <nav class="bg-blue-600 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-white">CMS Platform</h1>
+            <div class="hidden md:flex space-x-6">
+                <a [href]="'/auth'" class="text-white border px-3 rounded-md py-1 hover:text-blue-200 transition">
+                    Login
+                </a>
+            </div>
+            <button class="md:hidden text-white" (click)="toggleMenu()">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </div>
+    </nav>
+    <div *ngIf="isMenuOpen" class="md:hidden bg-blue-500">
+        <a [href]="'/auth'" class="block py-2 px-4 text-end text-white hover:bg-blue-600">
+            Login
+        </a>
+    </div>
+    <div class="bg-gradient-to-r from-blue-500 to-blue-700 py-20">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 text-white">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6">
+                        Powerful Content Management System
+                    </h2>
+                    <p class="text-xl mb-8">
+                        Create, manage, and scale your content with our modern CMS platform.
+                    </p>
+                    <button class="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold 
+                    hover:bg-blue-50 transition duration-300">
+                        Get Started
+                    </button>
+                </div>
+                <div class="md:w-1/2 mt-10 md:mt-0">
+                    <div class="bg-white p-6 rounded-lg shadow-xl">
+                        <h3 class="text-2xl text-center font-semibold text-blue-600 mb-4">
+                            Enjoyyyy
+                        </h3>
+                        <div class="text-center">
+                            <div
+                                class="bg-blue-100 p-6 rounded-full mx-auto w-24 h-24 flex items-center justify-center text-4xl text-blue-600">
+                                💌
+                            </div>
+                            <h4 class="mt-4 text-xl font-bold">Make Contents <b> WITH US </b></h4>
+                            <p class="mt-2 text-blue-700">- - - - - - - - - - - </p>
+                        </div>  
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="features" class="bg-white py-16">
+        <div class="container mx-auto">
+            <h3 class="text-3xl font-bold text-blue-600 text-center">Features</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                <div class="text-center">
+                    <div
+                        class="bg-blue-100 p-6 rounded-full mx-auto w-24 h-24 flex items-center justify-center text-4xl text-blue-600">
+                        📂
+                    </div>
+                    <h4 class="mt-4 text-xl font-bold">Intuitive Dashboard</h4>
+                    <p class="mt-2 text-blue-700">Manage your content seamlessly with a user-friendly interface.</p>
+                </div>
+                <div class="text-center">
+                    <div
+                        class="bg-blue-100 p-6 rounded-full mx-auto w-24 h-24 flex items-center justify-center text-4xl text-blue-600">
+                        🔍
+                    </div>
+                    <h4 class="mt-4 text-xl font-bold">Advanced Search</h4>
+                    <p class="mt-2 text-blue-700">Find your data quickly with smart search and filters.</p>
+                </div>
+                <div class="text-center">
+                    <div
+                        class="bg-blue-100 p-6 rounded-full mx-auto w-24 h-24 flex items-center justify-center text-4xl text-blue-600">
+                        🔒
+                    </div>
+                    <h4 class="mt-4 text-xl font-bold">Secure Platform</h4>
+                    <p class="mt-2 text-blue-700">Your content is safe with top-notch security features.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <footer class="bg-blue-600 text-white py-8">
+        <div class="container mx-auto text-center">
+            <p>&copy; 2025 CMS Platform. All Rights Reserved.</p>
+        </div>
+    </footer>
+</div>
