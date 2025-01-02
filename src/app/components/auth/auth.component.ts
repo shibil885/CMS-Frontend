@@ -18,11 +18,15 @@ import {
   invalidChar,
   letterOrNumber,
 } from '../../validators/username.validator';
+import { UserService } from '../../shared/services/user/user.service';
+import { IUser } from '../../interfaces/user.interface';
+import { Router } from '@angular/router';
+import { LoadingComponent } from '../../shared/components/loading/loading.component';
 
 @Component({
   selector: 'app-auth',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, LoadingComponent],
   templateUrl: './auth.component.html',
   styleUrl: './auth.component.css',
 })
@@ -30,11 +34,16 @@ export class AuthComponent {
   isLogin = true;
   isOtp = false;
   isLoading = false;
+  email = '';
   loginForm: FormGroup;
   signupForm: FormGroup;
   otpForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private _userService: UserService,
+    private _router: Router
+  ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
@@ -81,27 +90,60 @@ export class AuthComponent {
 
   onLoginSubmit() {
     if (this.loginForm.valid) {
-      console.log('Login:', this.loginForm.value);
-      // Add your login logic here
+      this.isLoading = true;
+      this.isLogin = false;
+      this._userService.userLogin<IUser>(this.loginForm.value).subscribe(
+        (res) => {
+          if (res.success) {
+            this.isLoading = false;
+            this._router.navigate(['/home']);
+          }
+        },
+        (err) => {
+          console.log('errrrrr -->', err);
+        }
+      );
     }
   }
 
   onSignupSubmit() {
     if (this.signupForm.valid) {
-      console.log('Signup:', this.signupForm.value);
-      // Add your signup logic here
+      this.isLoading = true;
+      const { email, username, password } = this.signupForm.value;
+      this._userService
+        .userSignup<IUser>({ username, email, password })
+        .subscribe((res) => {
+          if (res.success && res.data) {
+            this.isLoading = false;
+            this.isLogin = false;
+            this.isOtp = true;
+            this.email = res.data?.email;
+          }
+        });
     }
   }
   onOtpSubmit() {
     if (this.signupForm.valid) {
-      console.log('Signup:', this.signupForm.value);
-      // Add your signup logic here
+      this.isOtp = false;
+      this.isLoading = true;
+      this._userService
+        .otpSubmit<IUser>({
+          email: this.email,
+          otp: this.otpForm.value,
+        })
+        .subscribe((res) => {
+          if (res.success) {
+            this.isLoading = false;
+            this._router.navigate(['/home']);
+          }
+        });
     }
   }
+
   onResendOtp() {
     if (this.signupForm.valid) {
       console.log('Signup:', this.signupForm.value);
-      // Add your signup logic here
+      // TODO
     }
   }
 }

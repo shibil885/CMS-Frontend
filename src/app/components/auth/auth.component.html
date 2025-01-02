@@ -1,14 +1,20 @@
 <div class="min-h-screen bg-gradient-to-r from-blue-50 to-blue-300 flex items-center justify-center p-4">
     <div class="bg-white rounded-lg shadow-xl w-full max-w-md overflow-hidden">
-        <div class="flex border-b" *ngIf="!isOtp">
+        <div class="flex border-b" *ngIf="!isOtp && !isLoading">
             <button [class]="isLogin ? 'bg-blue-400' : 'bg-white'"
                 class="w-1/2 p-4 text-blue-600 font-semibold hover:bg-blue-50 transition" (click)="isLogin = true">
                 Login
             </button>
-            <button [class]="!isLogin ? 'bg-blue-400' : 'bg-white'"
+            <button [class]="!isLogin && !isLoading ? 'bg-blue-400' : 'bg-white'"
                 class="w-1/2 p-4 text-blue-600 font-semibold hover:bg-blue-50 transition" (click)="isLogin = false">
                 Sign Up
             </button>
+        </div>
+
+        <div *ngIf="isLoading" class="flex items-center justify-center p-8">
+            <div class=" space-y-6">
+                <app-loading></app-loading>
+            </div>
         </div>
 
         <div *ngIf="isLogin && !isOtp" class="p-8">
@@ -42,7 +48,7 @@
             </form>
         </div>
 
-        <div *ngIf="!isLogin && !isOtp" class="p-8">
+        <div *ngIf="!isLogin && !isOtp && !isLoading" class="p-8">
             <form [formGroup]="signupForm" (ngSubmit)="onSignupSubmit()" class="space-y-6">
                 <div>
                     <label class="block text-gray-700 text-sm font-bold mb-2">Username</label>
@@ -112,7 +118,7 @@
                 <form [formGroup]="otpForm" (ngSubmit)="onOtpSubmit()" class="space-y-6">
                     <div>
                         <p class="block text-gray-700 text-sm font-semibold mb-2 text-center">We send an otp to
-                            <b>shibilgmail.com</b>
+                            <b>{{email}}</b>
                         </p>
                     </div>
 
