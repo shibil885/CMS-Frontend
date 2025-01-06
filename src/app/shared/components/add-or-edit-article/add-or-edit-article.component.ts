@@ -10,6 +10,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { IArticle } from '../../../interfaces/article.interface';
+import { ToastService } from '../../services/toast/toast.service';
 
 @Component({
   selector: 'app-add-or-edit-article',
@@ -24,15 +25,15 @@ export class AddOrEditArticleComponent {
   @Input() editMode!: boolean;
   @Input() article!: IArticle;
   @Output() closeFormEvent = new EventEmitter();
-  constructor(private articleService: ArticleService, private fb: FormBuilder) {
-  }
+  constructor(
+    private articleService: ArticleService,
+    private fb: FormBuilder,
+    private _toastService: ToastService
+  ) {}
   ngOnInit(): void {
     this.createForm();
     if (this.editMode && this.article) {
-      console.log('constru if ', this.editMode, this.article);
       this.editArticle();
-    }else {
-      console.log('constru else ', this.editMode, this.article);
     }
   }
   createForm() {
@@ -43,12 +44,13 @@ export class AddOrEditArticleComponent {
       tags: [''],
       status: ['draft', Validators.required],
     });
+    this.addSection();
   }
-  
+
   get sections() {
     return this.articleForm.get('sections') as FormArray;
   }
-  
+
   addSection() {
     const section = this.fb.group({
       subHeading: ['', Validators.required],
@@ -56,13 +58,12 @@ export class AddOrEditArticleComponent {
     });
     this.sections.push(section);
   }
-  
+
   removeSection(index: number) {
     this.sections.removeAt(index);
   }
-  
+
   editArticle() {
-    console.log('edit methode', this.editMode, this.article);
     this.editingArticle = this.article;
     this.articleForm.patchValue({
       mainHeading: this.article.mainHeading,
@@ -70,7 +71,7 @@ export class AddOrEditArticleComponent {
       tags: this.article.tags.join(', '),
       status: this.article.status,
     });
-    
+
     while (this.sections.length) {
       this.sections.removeAt(0);
     }
@@ -97,13 +98,15 @@ export class AddOrEditArticleComponent {
       this.articleService
         .updateArticle<IArticle>(this.editingArticle._id, articleData)
         .subscribe((res) => {
-          console.log('update res', res);
+          this._toastService.showToast(res.message, 'success');
+          this.closeFormEvent.emit();
         });
     } else {
       this.articleService
         .createArticle<IArticle>(articleData)
         .subscribe((res) => {
-          console.log('created res', res);
+          this._toastService.showToast(res.message, 'success');
+          this.closeFormEvent.emit();
         });
     }
   }

@@ -6,6 +6,7 @@ import { ArticleService } from '../../shared/services/article/article.service';
 import { AddOrEditArticleComponent } from '../../shared/components/add-or-edit-article/add-or-edit-article.component';
 import { Router } from '@angular/router';
 import { ViewArticleComponent } from '../view-article/view-article.component';
+import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
 
 @Component({
   selector: 'app-home',
@@ -16,6 +17,7 @@ import { ViewArticleComponent } from '../view-article/view-article.component';
     FormsModule,
     AddOrEditArticleComponent,
     ViewArticleComponent,
+    PaginationComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
@@ -23,8 +25,8 @@ import { ViewArticleComponent } from '../view-article/view-article.component';
 export class HomeComponent {
   articles: IArticle[] = [];
   currentPage = 1;
-  totalPages = 1;
-  pages: number[] = [];
+  total = 1;
+  limit = 3;
   searchTerm = '';
   renderAddForm = false;
   renderSingle = false;
@@ -44,19 +46,16 @@ export class HomeComponent {
 
   onCloseAddForm() {
     this.renderAddForm = false;
+    this.loadArticles();
   }
 
   loadArticles() {
     this._articleService
-      .getArticles<IArticle[]>(this.currentPage)
+      .getArticles<IArticle[]>(this.currentPage, this.limit)
       .subscribe((response) => {
-        if (response.data) {
-          console.log(response);
+        if (response.data && response.meta) {
           this.articles = response.data;
-          // this.totalPages = response.meta['totalPages'];
-
-          /// TODO
-          this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+          this.total = parseInt(response.meta['total'].toString());
         }
       });
   }

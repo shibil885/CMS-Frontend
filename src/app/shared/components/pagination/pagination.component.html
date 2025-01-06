@@ -1,0 +1,29 @@
+<nav *ngIf="totalPages > 1" aria-label="Pagination" [ngClass]="{
+      'pagination-agency': typeOfUser === 'agency',
+      'pagination-admin': typeOfUser === 'admin',
+      'pagination-default': typeOfUser !== 'agency' && typeOfUser !== 'admin'
+    }" class="pagination">
+    <ul class="pagination-list">
+        <li>
+            <button [disabled]="currentPage == 1" (click)="onPageChange(currentPage - 1)" class="pagination-button"
+                [class.disabled]="currentPage == 1" aria-label="Previous page">
+                <i class="fa-solid fa-chevron-left"></i>
+            </button>
+        </li>
+        <li *ngFor="let page of visiblePages">
+            <button *ngIf="page !== '...'; else dots" (click)="onPageChange(page)" class="pagination-button"
+                [class.active]="page == currentPage">
+                {{ page }}
+            </button>
+            <ng-template #dots>
+                <button class="pagination-button disabled" disabled>...</button>
+            </ng-template>
+        </li>
+        <li>
+            <button [disabled]="currentPage == totalPages" (click)="onPageChange()" class="pagination-button"
+                [class.disabled]="currentPage == totalPages" aria-label="Next page">
+                <i class="fa-solid fa-angle-right"></i>
+            </button>
+        </li>
+    </ul>
+</nav>
