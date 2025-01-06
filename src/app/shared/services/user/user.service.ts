@@ -1,7 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { IApiResponse } from '../../../interfaces/response/apiReposne.interface';
-import { IUser } from '../../../interfaces/user.interface';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -15,9 +14,11 @@ export class UserService {
     email: string;
     password: string;
   }): Observable<IApiResponse<T>> {
+    console.log('invoked backend call');
     return this._http.post<IApiResponse<T>>(
       `${this._baseUrl}/user/login`,
-      userData
+      userData,
+      { withCredentials: true }
     );
   }
 
@@ -28,14 +29,16 @@ export class UserService {
   }): Observable<IApiResponse<T>> {
     return this._http.post<IApiResponse<T>>(
       `${this._baseUrl}/user/register`,
-      userData
+      userData,
+      { withCredentials: true }
     );
   }
 
   otpSubmit<T>(otpData: { email: string; otp: number }) {
     return this._http.patch<IApiResponse<T>>(
       `${this._baseUrl}/otp/submit`,
-      otpData
+      otpData,
+      { withCredentials: true }
     );
   }
 }

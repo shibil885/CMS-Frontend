@@ -1,38 +1,33 @@
 import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
+import { ToastService } from '../shared/services/toast/toast.service';
+import { Router } from '@angular/router';
 
-export const httpErrorInterceptorFn: HttpInterceptorFn = (req, next) => {
-  const snackBar = inject(MatSnackBar);
+export const httpInterceptorFn: HttpInterceptorFn = (req, next) => {
+  const toaster = inject(ToastService);
+  const router = inject(Router);
 
   return next(req).pipe(
     catchError((error) => {
-      let errorMessage = 'An unexpected error occurred.';
-      console.log('intercepto ->', error);
-      if (error.error) {
-        // Handle errors based on the backend response structure
-        if (typeof error.error === 'string') {
-          errorMessage = error.error;
-        } else if (error.error.message) {
-          errorMessage =
-            typeof error.error.message === 'string'
-              ? error.error.message
-              : error.error.message[0]; // Assume the first message in the array
-        }
+      if (error.error.statusCode === 401) {
+        router.navigate(['/auth']);
+        localStorage.removeItem('acc_T');
       }
 
-      // Log the error to the console (optional)
-      console.error(`HTTP Error: ${error.status} - ${errorMessage}`, error);
-
-      // Show a user-friendly message
-      snackBar.open(errorMessage, 'Close', {
-        duration: 5000,
-        panelClass: ['error-snackbar'],
-      });
-
-      // Rethrow the error for further processing if needed
+      let errorMessage = 'An unexpected error occurred.';
+      if (error.error) {
+        if (typeof error.error === 'string') {
+          errorMessage = error.error;
+        } else if (error.error.message?.message) {
+          errorMessage =
+            typeof error.error.message.message === 'string'
+              ? error.error.message.message
+              : error.error.message[0];
+        }
+      }
+      toaster.showToast(errorMessage, 'error');
       return throwError(() => new Error(errorMessage));
     })
   );

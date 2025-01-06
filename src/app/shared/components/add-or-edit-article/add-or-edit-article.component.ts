@@ -34,9 +34,6 @@ export class AddOrEditArticleComponent {
     }else {
       console.log('constru else ', this.editMode, this.article);
     }
-    //Called after the constructor, initializing input properties, and the first call to ngOnChanges.
-    //Add 'implements OnInit' to the class.
-    
   }
   createForm() {
     this.articleForm = this.fb.group({

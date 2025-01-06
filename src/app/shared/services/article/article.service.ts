@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { IArticle } from '../../../interfaces/article.interface';
 import { IApiResponse } from '../../../interfaces/response/apiReposne.interface';
@@ -12,32 +12,45 @@ export class ArticleService {
 
   constructor(private http: HttpClient) {}
 
-  getArticles(page: number = 1, limit: number = 10): Observable<any> {
-    return this.http.get(
-      `${this._baseUrl}/articles?page=${page}&limit=${limit}`
-    );
+  getArticles<T>(
+    page: number = 1,
+    limit: number = 10
+  ): Observable<IApiResponse<T>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('limit', limit.toString());
+    return this.http.get<IApiResponse<T>>(`${this._baseUrl}/articles/findAll`, {
+      params,
+      withCredentials: true,
+    });
   }
 
   getArticle<T>(id: string): Observable<IApiResponse<T>> {
-    return this.http.get<IApiResponse<T>>(`${this._baseUrl}/articles/${id}`);
+    return this.http.get<IApiResponse<T>>(`${this._baseUrl}/articles/${id}`, {
+      withCredentials: true,
+    });
   }
 
   createArticle<T>(article: IArticle): Observable<IApiResponse<T>> {
     console.log('data -->', article);
     return this.http.post<IApiResponse<T>>(
       `${this._baseUrl}/articles`,
-      article
+      article,
+      { withCredentials: true }
     );
   }
 
   updateArticle<T>(id: string, article: IArticle): Observable<IApiResponse<T>> {
     return this.http.put<IApiResponse<T>>(
       `${this._baseUrl}/articles/${id}`,
-      article
+      article,
+      { withCredentials: true }
     );
   }
 
   deleteArticle(id: string): Observable<void> {
-    return this.http.delete<void>(`${this._baseUrl}/articles/${id}`);
+    return this.http.delete<void>(`${this._baseUrl}/articles/${id}`, {
+      withCredentials: true,
+    });
   }
 }

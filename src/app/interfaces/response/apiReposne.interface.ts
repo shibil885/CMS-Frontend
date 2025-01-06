@@ -4,5 +4,5 @@ export interface IApiResponse<T> {
   message: string;
   data?: T;
   timestamp: string;
-  meta?: Record<string, number>;
+  meta?: Record<string, number | string>;
 }

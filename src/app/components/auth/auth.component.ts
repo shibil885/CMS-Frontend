@@ -94,13 +94,15 @@ export class AuthComponent {
       this.isLogin = false;
       this._userService.userLogin<IUser>(this.loginForm.value).subscribe(
         (res) => {
-          if (res.success) {
+          if (res.success && res.meta) {
             this.isLoading = false;
+            localStorage.setItem('acc_T', res.meta['acc_T'].toString());
             this._router.navigate(['/home']);
           }
         },
-        (err) => {
-          console.log('errrrrr -->', err);
+        () => {
+          this.isLoading = false;
+          this.isLogin = true;
         }
       );
     }
@@ -112,14 +114,20 @@ export class AuthComponent {
       const { email, username, password } = this.signupForm.value;
       this._userService
         .userSignup<IUser>({ username, email, password })
-        .subscribe((res) => {
-          if (res.success && res.data) {
+        .subscribe(
+          (res) => {
+            if (res.success && res.data) {
+              this.isLoading = false;
+              this.isLogin = false;
+              this.isOtp = true;
+              this.email = res.data?.email;
+            }
+          },
+          () => {
             this.isLoading = false;
             this.isLogin = false;
-            this.isOtp = true;
-            this.email = res.data?.email;
           }
-        });
+        );
     }
   }
   onOtpSubmit() {
@@ -129,14 +137,21 @@ export class AuthComponent {
       this._userService
         .otpSubmit<IUser>({
           email: this.email,
-          otp: this.otpForm.value,
+          ...this.otpForm.value,
         })
-        .subscribe((res) => {
-          if (res.success) {
+        .subscribe(
+          (res) => {
+            if (res.success && res.meta) {
+              this.isLoading = false;
+              localStorage.setItem('acc_T', res.meta['acc_T'].toString());
+              this._router.navigate(['/home']);
+            }
+          },
+          () => {
             this.isLoading = false;
-            this._router.navigate(['/home']);
+            this.isOtp = true;
           }
-        });
+        );
     }
   }
 

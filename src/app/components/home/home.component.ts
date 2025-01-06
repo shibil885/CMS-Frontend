@@ -26,15 +26,12 @@ export class HomeComponent {
   totalPages = 1;
   pages: number[] = [];
   searchTerm = '';
-  statusFilter = '';
   renderAddForm = false;
   renderSingle = false;
   selectedArticle!: IArticle;
   editMode = false;
-  constructor(
-    private _articleService: ArticleService,
-    private _router: Router
-  ) {}
+  isMenuOpen = false;
+  constructor(private _articleService: ArticleService) {}
 
   ngOnInit() {
     this.loadArticles();
@@ -50,11 +47,18 @@ export class HomeComponent {
   }
 
   loadArticles() {
-    this._articleService.getArticles(this.currentPage).subscribe((response) => {
-      this.articles = response.data.articles;
-      this.totalPages = response.data.pages;
-      this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    });
+    this._articleService
+      .getArticles<IArticle[]>(this.currentPage)
+      .subscribe((response) => {
+        if (response.data) {
+          console.log(response);
+          this.articles = response.data;
+          // this.totalPages = response.meta['totalPages'];
+
+          /// TODO
+          this.pages = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+        }
+      });
   }
 
   changePage(page: number) {
@@ -84,10 +88,11 @@ export class HomeComponent {
   }
 
   onEditArticle(article: IArticle) {
-    console.log('selected article from home ts 1 ', article);
     this.renderAddForm = true;
     this.editMode = true;
     this.selectedArticle = article;
-    console.log('selected article from home ts 2', this.selectedArticle);
+  }
+  toggleMenu() {
+    this.isMenuOpen = !this.isMenuOpen;
   }
 }
