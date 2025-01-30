@@ -9,4 +9,8 @@ export class AuthService {
   isLoggedIn(): boolean {
     return !!localStorage.getItem('acc_T');
   }
+
+  logout() {
+    localStorage.removeItem('acc_T')
+  }
 }

@@ -7,6 +7,7 @@ import { AddOrEditArticleComponent } from '../../shared/components/add-or-edit-a
 import { Router } from '@angular/router';
 import { ViewArticleComponent } from '../view-article/view-article.component';
 import { PaginationComponent } from '../../shared/components/pagination/pagination.component';
+import { AuthService } from '../../auth/service/auth.service';
 
 @Component({
   selector: 'app-home',
@@ -33,7 +34,7 @@ export class HomeComponent {
   selectedArticle!: IArticle;
   editMode = false;
   isMenuOpen = false;
-  constructor(private _articleService: ArticleService) {}
+  constructor(private _articleService: ArticleService, private authService: AuthService) {}
 
   ngOnInit() {
     this.loadArticles();
@@ -93,5 +94,8 @@ export class HomeComponent {
   }
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+  logout() {
+    this.authService.logout()
   }
 }
